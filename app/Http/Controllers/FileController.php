@@ -11,12 +11,13 @@ use Illuminate\Http\Request;
 class FileController extends Controller
 {
 
-    public function saveFile(Request $request, $type = 'images')
+    public function saveFile(Request $request)
     {
         $file = $request->file('file');
 
         // config
-        $dir = $type . '/';
+        $path = Input::get('path') ? Input::get('path') : 'images';
+        $dir = $path . '/';
         $id = uniqid();
         $name = $id . '_' . $file->getClientOriginalName();
 
