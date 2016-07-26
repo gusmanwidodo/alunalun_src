@@ -12,5 +12,9 @@
 */
 
 $app->get('/', function () use ($app) {
-    return $app->version();
+    return '<strong>Access Denied!</strong>';
+});
+
+$app->group(['namespace' => 'App\Http\Controllers', 'prefix' => 'image', 'as' => 'image'], function () use ($app) {
+    $app->post('upload', ['as' => 'upload', 'uses' => 'FileController@postUpload']);
 });

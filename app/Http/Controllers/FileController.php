@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-class ExampleController extends Controller
+use Illuminate\Http\Request;
+
+class FileController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -14,5 +16,9 @@ class ExampleController extends Controller
         //
     }
 
-    //
+    public function postUpload(Request $request)
+    {
+        return $request;
+    }
+
 }
