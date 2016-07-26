@@ -27,6 +27,9 @@ $app->withFacades();
 
 // $app->withEloquent();
 
+// reister config file
+$app->configure('cors');
+
 /*
 |--------------------------------------------------------------------------
 | Register Container Bindings
@@ -85,6 +88,8 @@ $app->singleton('filesystem', function ($app) {
 // $app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
+
+$app->register(\Barryvdh\Cors\LumenServiceProvider::class);
 
 $app->register(Intervention\Image\ImageServiceProvider::class);
 
