@@ -15,6 +15,6 @@ $app->get('/', function () use ($app) {
     return '<strong>Access Denied!</strong>';
 });
 
-$app->group(['namespace' => 'App\Http\Controllers', 'prefix' => 'image', 'as' => 'image'], function () use ($app) {
-    $app->post('upload', ['as' => 'upload', 'uses' => 'FileController@postUpload']);
+$app->group(['middleware' => 'cors', 'namespace' => 'App\Http\Controllers', 'prefix' => 'file', 'as' => 'file'], function () use ($app) {
+    $app->post('save', ['as' => 'save', 'uses' => 'FileController@saveFile']);
 });
