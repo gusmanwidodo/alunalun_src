@@ -17,6 +17,6 @@ return [
     'allowedMethods' => ['*'],
     'exposedHeaders' => [],
     'maxAge' => 0,
-    'hosts' => [],
+    'hosts' => ['http://alunalun.dev', 'http://src.alunalun.dev'],
 ];
 
