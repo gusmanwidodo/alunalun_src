@@ -44,8 +44,10 @@ class FileController extends Controller
                 break;
             default:
                 // only image file
-                if (Input::get('width') && Input::get('height')) {
-                    $img = Image::make(storage_path('app/'. $dir . $name))->resize(Input::get('width'), Input::get('height'));
+                if (Input::get('width')) {
+                    $img = Image::make(storage_path('app/'. $dir . $name))->resize(Input::get('width'), null, function ($constraint) {
+                        $constraint->aspectRatio();
+                    });
                     $img->save(storage_path('app/'. $dir . $name));
                 }
 
