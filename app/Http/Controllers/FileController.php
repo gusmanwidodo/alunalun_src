@@ -18,9 +18,9 @@ class FileController extends Controller
     public function saveFile(Request $request)
     {
         $file = $request->file('file');
-        if(!Input::get('width') || !Input::get('height')) abort(404);
+        $width = Input::get('width', 800);
 
-        $path_available = ['images', 'tourism', 'product', 'company', 'region', 'news'];
+        $path_available = ['images', 'tourism', 'product', 'company', 'region', 'news', 'payments'];
 
         // config
         $path = Input::get('path') ? Input::get('path') : 'images';
@@ -37,19 +37,17 @@ class FileController extends Controller
                 $img->save(storage_path('app/'. $dir . $name));
                 break;
             case "crop":
-                if(Input::get('width') && Input::get('height') && Input::get('x') && Input::get('y')){
+                if(Input::get('height') && Input::get('x') && Input::get('y')){
                     $img = Image::make(storage_path('app/'. $dir . $name))->fit(Input::get('fit'));
-                    $img->crop(Input::get('width'), Input::get('height'), Input::get('x'), Input::get('y'));
+                    $img->crop($width, Input::get('height'), Input::get('x'), Input::get('y'));
                 }
                 break;
             default:
                 // only image file
-                if (Input::get('width')) {
-                    $img = Image::make(storage_path('app/'. $dir . $name))->resize(Input::get('width'), null, function ($constraint) {
-                        $constraint->aspectRatio();
-                    });
-                    $img->save(storage_path('app/'. $dir . $name));
-                }
+                $img = Image::make(storage_path('app/'. $dir . $name))->resize($width, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+                $img->save(storage_path('app/'. $dir . $name));
 
         }
 
