@@ -17,4 +17,6 @@ $app->get('/', function () use ($app) {
 
 $app->group(['middleware' => 'cors', 'namespace' => 'App\Http\Controllers', 'prefix' => 'file', 'as' => 'file'], function () use ($app) {
     $app->post('save[/{type}]', ['as' => 'save', 'uses' => 'FileController@saveFile']);
+
+    $app->post('upload/{type}', ['as' => 'upload', 'uses' => 'FileController@uploadFile']);
 });

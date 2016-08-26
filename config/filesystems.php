@@ -56,11 +56,19 @@ return [
 
         's3' => [
             'driver' => 's3',
-            'key' => env('S3_KEY'),
-            'secret' => env('S3_SECRET'),
-            'region' => env('S3_REGION'),
-            'bucket' => env('S3_BUCKET'),
+            'key' => 'AKIAJTO476XRFTNF3VHQ',
+            'secret' => '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',
+            'region' => 'ap-southeast-1',
+            'bucket' => 'devalunalun',
         ],
+
+        's3_prod' => [
+            'driver' => 's3',
+            'key' => 'AKIAJTO476XRFTNF3VHQ',
+            'secret' => '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',
+            'region' => 'ap-southeast-1',
+            'bucket' => 'alunalun-src',
+        ]
 
     ],
 

@@ -90,4 +90,129 @@ class FileController extends Controller
 
     }
 
+    public function uploadFile($type, Request $request){
+        $file = $request->file('file');
+        $name = uniqid().'_'.time(). '.jpg';
+        $image = Image::make($file)->encode('jpg');
+        $image_medium = Image::make($file)->encode('jpg');
+        $image_small = Image::make($file)->encode('jpg');
+        switch($type){
+            case "member":
+                $dir = 'img/members/'.date('Y').'/'.date('m').'/';
+                $image->fit(350, 350);
+                $image_medium->fit(100, 100);
+                $image_small->fit(50, 50);
+                Storage::disk('s3_prod')->put($dir.$name, (string) $image->stream('jpg'), 'public');
+                Storage::disk('s3_prod')->put($dir.'md_'.$name, (string) $image_medium->stream('jpg'), 'public');
+                Storage::disk('s3_prod')->put($dir.'sm_'.$name, (string) $image_small->stream('jpg'), 'public');
+                break;
+            case "company":
+                $size = $image->width();
+                $size = $size < $image->height() ? $image->height() : $size;
+                $image->resizeCanvas($size, $size, 'center', false, 'ffffff');
+                $image->fit(200, 200);
+                $image_medium->resizeCanvas($size, $size, 'center', false, 'ffffff');
+                $image_medium->fit(150, 150);
+                $image_small->resizeCanvas($size, $size, 'center', false, 'ffffff');
+                $image_small->fit(50, 50);
+                $dir = 'img/company/'.date('Y').'/'.date('m').'/';
+                Storage::disk('s3_prod')->put($dir.$name, $image->stream(), 'public');
+                Storage::disk('s3_prod')->put($dir.'md_'.$name, $image_medium->stream(), 'public');
+                Storage::disk('s3_prod')->put($dir.'sm_'.$name, $image_small->stream(), 'public');
+                break;
+            case "product":
+                $size = $image->width();
+                $size = $size < $image->height() ? $image->height() : $size;
+                $image->resizeCanvas($size, $size, 'center', false, 'ffffff');
+                $image->fit(800, 800);
+                $image_medium->resizeCanvas($size, $size, 'center', false, 'ffffff');
+                $image_medium->fit(300, 300);
+                $image_small->resizeCanvas($size, $size, 'center', false, 'ffffff');
+                $image_small->fit(100, 100);
+                $dir = 'img/products/'.date('Y').'/'.date('m').'/';
+                Storage::disk('s3_prod')->put($dir.$name, $image->stream(), 'public');
+                Storage::disk('s3_prod')->put($dir.'md_'.$name, $image_medium->stream(), 'public');
+                Storage::disk('s3_prod')->put($dir.'sm_'.$name, $image_small->stream(), 'public');
+                break;
+            case "region":
+                $dir = 'img/regions/'.date('Y').'/'.date('m').'/';
+                $image->fit(200, 200);
+                $image_medium->fit(150, 150);
+                $image_small->fit(50, 50);
+                Storage::disk('s3_prod')->put($dir.$name, $image->stream(), 'public');
+                Storage::disk('s3_prod')->put($dir.'md_'.$name, $image_medium->stream(), 'public');
+                Storage::disk('s3_prod')->put($dir.'sm_'.$name, $image_small->stream(), 'public');
+                break;
+            case "cover-region":
+                $dir = 'img/coverregions/'.date('Y').'/'.date('m').'/';
+                $image->fit(930, 300);
+                $image_medium->fit(300, 300);
+                $image_small->fit(100, 100);
+                Storage::disk('s3_prod')->put($dir.$name, $image->stream(), 'public');
+                Storage::disk('s3_prod')->put($dir.'md_'.$name, $image_medium->stream(), 'public');
+                Storage::disk('s3_prod')->put($dir.'sm_'.$name, $image_small->stream(), 'public');
+                break;
+            case "cover-company":
+                $dir = 'img/covercompanies/'.date('Y').'/'.date('m').'/';
+                $image->fit(930, 300);
+                $image_medium->fit(300, 300);
+                $image_small->fit(100, 100);
+                Storage::disk('s3_prod')->put($dir.$name, $image->stream(), 'public');
+                Storage::disk('s3_prod')->put($dir.'md_'.$name, $image_medium->stream(), 'public');
+                Storage::disk('s3_prod')->put($dir.'sm_'.$name, $image_small->stream(), 'public');
+                break;
+            case "payment":
+                $dir = 'img/payments/'.date('Y').'/'.date('m').'/';
+                $image->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+                Storage::disk('s3_prod')->put($dir.$name, $image->stream(), 'public');
+                break;
+            case "news":
+                $dir = 'img/news/'.date('Y').'/'.date('m').'/';
+                $image->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+                $image_medium->fit(300, 300);
+                $image_small->fit(100, 100);
+                Storage::disk('s3_prod')->put($dir.$name, $image->stream(), 'public');
+                Storage::disk('s3_prod')->put($dir.'md_'.$name, $image_medium->stream(), 'public');
+                Storage::disk('s3_prod')->put($dir.'sm_'.$name, $image_small->stream(), 'public');
+                break;
+            case "tourism":
+                $dir = 'img/tourisms/'.date('Y').'/'.date('m').'/';
+                $image->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+                $image_medium->fit(300, 300);
+                $image_small->fit(100, 100);
+                Storage::disk('s3_prod')->put($dir.$name, $image->stream(), 'public');
+                Storage::disk('s3_prod')->put($dir.'md_'.$name, $image_medium->stream(), 'public');
+                Storage::disk('s3_prod')->put($dir.'sm_'.$name, $image_small->stream(), 'public');
+                break;
+            case "vacancy":
+                $dir = 'img/vacancies/'.date('Y').'/'.date('m').'/';
+                $image->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+                $image_medium->fit(300, 300);
+                $image_small->fit(100, 100);
+                Storage::disk('s3_prod')->put($dir.$name, $image->stream(), 'public');
+                Storage::disk('s3_prod')->put($dir.'md_'.$name, $image_medium->stream(), 'public');
+                Storage::disk('s3_prod')->put($dir.'sm_'.$name, $image_small->stream(), 'public');
+                break;
+            default:
+                $dir = 'img/general/'.date('Y').'/'.date('m').'/';
+                $image->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+                $image_medium->fit(300, 300);
+                $image_small->fit(100, 100);
+                Storage::disk('s3_prod')->put($dir.$name, $image->stream(), 'public');
+                Storage::disk('s3_prod')->put($dir.'md_'.$name, $image_medium->stream(), 'public');
+                Storage::disk('s3_prod')->put($dir.'sm_'.$name, $image_small->stream(), 'public');
+        }
+
+        return response()->json(['status' => 'success', 'data' => $dir . $name]);
+    }
 }
