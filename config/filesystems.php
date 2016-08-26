@@ -54,7 +54,21 @@ return [
             'visibility' => 'public',
         ],
 
-       
+        's3' => [
+            'driver' => 's3',
+            'key' => env('STORAGE_KEY'),
+            'secret' => env('STORAGE_SECRET'),
+            'region' => env('STORAGE_REGION'),
+            'bucket' => env('STORAGE_BUCKET'),
+        ],
+
+        's3_prod' => [
+            'driver' => 's3',
+            'key' => env('STORAGE_KEY'),
+            'secret' => env('STORAGE_SECRET'),
+            'region' => env('STORAGE_REGION'),
+            'bucket' => env('STORAGE_BUCKET'),
+        ]
 
     ],
 
