@@ -56,18 +56,18 @@ return [
 
         's3' => [
             'driver' => 's3',
-            'key' => env('STORAGE_KEY'),
-            'secret' => env('STORAGE_SECRET'),
-            'region' => env('STORAGE_REGION'),
-            'bucket' => env('STORAGE_BUCKET'),
+            'key' => env('S3_KEY'),
+            'secret' => env('S3_SECRET'),
+            'region' => env('S3_REGION'),
+            'bucket' => 'devalunalun',
         ],
 
         's3_prod' => [
             'driver' => 's3',
-            'key' => env('STORAGE_KEY'),
-            'secret' => env('STORAGE_SECRET'),
-            'region' => env('STORAGE_REGION'),
-            'bucket' => env('STORAGE_BUCKET'),
+            'key' => env('S3_KEY'),
+            'secret' => env('S3_SECRET'),
+            'region' => env('S3_REGION'),
+            'bucket' => env('S3_BUCKET'),
         ]
 
     ],
