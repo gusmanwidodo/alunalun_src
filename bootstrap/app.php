@@ -92,6 +92,8 @@ $app->singleton('filesystem', function ($app) {
 $app->register(\Barryvdh\Cors\LumenServiceProvider::class);
 
 $app->register(Intervention\Image\ImageServiceProvider::class);
+$app->register(Barryvdh\Cors\LumenServiceProvider::class);
+$app->configure('cors');
 
 /*
 |--------------------------------------------------------------------------
