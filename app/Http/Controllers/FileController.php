@@ -88,4 +88,155 @@ class FileController extends Controller
 
     }
 
+    /**
+    eg: src.alunalun.id/file/upload/{type}
+    type also file name on form
+    */
+
+    public function uploadFile($type, Request $request){
+        $file = $request->file($type);
+        $name = uniqid().'_'.time(). '.jpg';
+        $image = Image::make($file)->encode('jpg');
+        $image_medium = Image::make($file)->encode('jpg');
+        $image_small = Image::make($file)->encode('jpg');
+        $s3 = Storage::disk('s3_prod');
+        switch($type){
+            case "member":
+                $dir = 'members/'.date('Y').'/'.date('m').'/';
+                $image->fit(350, 350);
+                $image_medium->fit(100, 100);
+                $image_small->fit(50, 50);
+                $s3->put($dir.$name, $image->stream('jpg')->__toString(), 'public');
+                $s3->put($dir.'md_'.$name, $image_medium->stream('jpg')->__toString(), 'public');
+                $s3->put($dir.'sm_'.$name, $image_small->stream('jpg')->__toString(), 'public');
+                break;
+            case "logo":
+                $dir = 'logos/'.date('Y').'/'.date('m').'/';
+                $image->fit(200, 200);
+                $image_medium->fit(150, 150);
+                $image_small->fit(50, 50);
+                $s3->put($dir.$name, $image->stream('jpg')->__toString(), 'public');
+                $s3->put($dir.'md_'.$name, $image_medium->stream('jpg')->__toString(), 'public');
+                $s3->put($dir.'sm_'.$name, $image_small->stream('jpg')->__toString(), 'public');
+                break;
+
+            /* START JAGA-JAGA */
+            case "region":
+                $dir = 'regions/'.date('Y').'/'.date('m').'/';
+                $image->fit(200, 200);
+                $image_medium->fit(150, 150);
+                $image_small->fit(50, 50);
+                $s3->put($dir.$name, $image->stream('jpg')->__toString(), 'public');
+                $s3->put($dir.'md_'.$name, $image_medium->stream('jpg')->__toString(), 'public');
+                $s3->put($dir.'sm_'.$name, $image_small->stream('jpg')->__toString(), 'public');
+                break;
+            case "company":
+                $size = $image->width();
+                $size = $size < $image->height() ? $image->height() : $size;
+                $image->resizeCanvas($size, $size, 'center', false, 'ffffff');
+                $image->fit(200, 200);
+                $image_medium->resizeCanvas($size, $size, 'center', false, 'ffffff');
+                $image_medium->fit(150, 150);
+                $image_small->resizeCanvas($size, $size, 'center', false, 'ffffff');
+                $image_small->fit(50, 50);
+                $dir = 'companies/'.date('Y').'/'.date('m').'/';
+                $s3->put($dir.$name, $image->stream('jpg')->__toString(), 'public');
+                $s3->put($dir.'md_'.$name, $image_medium->stream('jpg')->__toString(), 'public');
+                $s3->put($dir.'sm_'.$name, $image_small->stream('jpg')->__toString(), 'public');
+                break;
+            /* END JAGA-JAGA */
+
+            case "product":
+                $size = $image->width();
+                $size = $size < $image->height() ? $image->height() : $size;
+                $image->resizeCanvas($size, $size, 'center', false, 'ffffff');
+                $image->fit(800, 800);
+                $image_medium->resizeCanvas($size, $size, 'center', false, 'ffffff');
+                $image_medium->fit(300, 300);
+                $image_small->resizeCanvas($size, $size, 'center', false, 'ffffff');
+                $image_small->fit(100, 100);
+                $dir = 'products/'.date('Y').'/'.date('m').'/';
+                $s3->put($dir.$name, $image->stream('jpg')->__toString(), 'public');
+                $s3->put($dir.'md_'.$name, $image_medium->stream('jpg')->__toString(), 'public');
+                $s3->put($dir.'sm_'.$name, $image_small->stream('jpg')->__toString(), 'public');
+                break;
+            case "cover":
+                $dir = 'covers/'.date('Y').'/'.date('m').'/';
+                $image->fit(930, 300);
+                $image_medium->fit(300, 300);
+                $image_small->fit(100, 100);
+                $s3->put($dir.$name, $image->stream('jpg')->__toString(), 'public');
+                $s3->put($dir.'md_'.$name, $image_medium->stream('jpg')->__toString(), 'public');
+                $s3->put($dir.'sm_'.$name, $image_small->stream('jpg')->__toString(), 'public');
+                break;
+            case "payment":
+                $dir = 'payments/'.date('Y').'/'.date('m').'/';
+                $image->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+                Storage::disk('s3_prod')->put($dir.$name, $image->stream('jpg')->__toString(), 'public');
+                break;
+            case "news":
+                $dir = 'news/'.date('Y').'/'.date('m').'/';
+                $image->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+                $image_medium->fit(300, 300);
+                $image_small->fit(100, 100);
+                $s3->put($dir.$name, $image->stream('jpg')->__toString(), 'public');
+                $s3->put($dir.'md_'.$name, $image_medium->stream('jpg')->__toString(), 'public');
+                $s3->put($dir.'sm_'.$name, $image_small->stream('jpg')->__toString(), 'public');
+                break;
+            case "post":
+                $dir = 'posts/'.date('Y').'/'.date('m').'/';
+                $image->resize(800, 600, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+                $image_medium->fit(300, 300);
+                $image_small->fit(100, 100);
+                $s3->put($dir.$name, $image->stream('jpg')->__toString(), 'public');
+                $s3->put($dir.'md_'.$name, $image_medium->stream('jpg')->__toString(), 'public');
+                $s3->put($dir.'sm_'.$name, $image_small->stream('jpg')->__toString(), 'public');
+                break;
+
+            /* START JAGA-JAGA */
+            case "tourism":
+                $dir = 'tourisms/'.date('Y').'/'.date('m').'/';
+                $image->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+                $image_medium->fit(300, 300);
+                $image_small->fit(100, 100);
+                $s3->put($dir.$name, $image->stream('jpg')->__toString(), 'public');
+                $s3->put($dir.'md_'.$name, $image_medium->stream('jpg')->__toString(), 'public');
+                $s3->put($dir.'sm_'.$name, $image_small->stream('jpg')->__toString(), 'public');
+                break;
+            case "vacancy":
+                $dir = 'jobs/'.date('Y').'/'.date('m').'/';
+                $image->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+                $image_medium->fit(300, 300);
+                $image_small->fit(100, 100);
+                $s3->put($dir.$name, $image->stream('jpg')->__toString(), 'public');
+                $s3->put($dir.'md_'.$name, $image_medium->stream('jpg')->__toString(), 'public');
+                $s3->put($dir.'sm_'.$name, $image_small->stream('jpg')->__toString(), 'public');
+                break;
+            /* END JAGA-JAGA */
+
+            default:
+                $dir = 'attachments/'.date('Y').'/'.date('m').'/';
+                $image->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+                $image_medium->fit(300, 300);
+                $image_small->fit(100, 100);
+                $s3->put($dir.$name, $image->stream('jpg')->__toString(), 'public');
+                $s3->put($dir.'md_'.$name, $image_medium->stream('jpg')->__toString(), 'public');
+                $s3->put($dir.'sm_'.$name, $image_small->stream('jpg')->__toString(), 'public');
+        }
+        $img_url = $s3->exists($dir . $name) ? $s3->url($dir . $name) : $s3->url('images/no-image.png');
+
+        return response()->json(['status' => 'success', 'data' => $dir . $name, 'url' => $img_url]);
+    }
 }
