@@ -112,8 +112,13 @@ class FileController extends Controller
                 break;
             case "logo":
                 $dir = 'logos/'.date('Y').'/'.date('m').'/';
+                $size = $image->width();
+                $size = $size < $image->height() ? $image->height() : $size;
+                $image->resizeCanvas($size, $size, 'center', false, 'ffffff');
                 $image->fit(200, 200);
+                $image_medium->resizeCanvas($size, $size, 'center', false, 'ffffff');
                 $image_medium->fit(150, 150);
+                $image_small->resizeCanvas($size, $size, 'center', false, 'ffffff');
                 $image_small->fit(50, 50);
                 $s3->put($dir.$name, $image->stream('jpg')->__toString(), 'public');
                 $s3->put($dir.'md_'.$name, $image_medium->stream('jpg')->__toString(), 'public');
