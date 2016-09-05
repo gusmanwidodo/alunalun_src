@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
 use Intervention\Image\Facades\Image;
 use Illuminate\Http\Request;
+use Validator;
 
 class FileController extends Controller
 {
@@ -96,7 +97,15 @@ class FileController extends Controller
     */
 
     public function uploadFile($type, Request $request){
+        $validator = Validator::make($request->all(), [
+            $type => 'required|image|max:2000'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['status' => 'failed', 'msg' => $validator->errors()->first($type)]); 
+        }
+
         $file = $request->file($type);
+
         $name = uniqid().'_'.time(). '.jpg';
         $image = Image::make($file)->encode('jpg');
         $image_medium = Image::make($file)->encode('jpg');
@@ -244,6 +253,6 @@ class FileController extends Controller
         }
         $img_url = $s3->exists($dir . $name) ? $s3->url($dir . $name) : $s3->url('images/no-image.png');
 
-        return response()->json(['status' => 'success', 'data' => $dir . $name, 'url' => $img_url]);
+        return response()->json(['status' => 'success', 'msg' => null, 'data' => $dir . $name, 'url' => $img_url]);
     }
 }
