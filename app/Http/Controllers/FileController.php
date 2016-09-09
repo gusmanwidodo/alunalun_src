@@ -212,6 +212,17 @@ class FileController extends Controller
                 $s3->put($dir.'md_'.$name, $image_medium->stream('jpg')->__toString(), 'public');
                 $s3->put($dir.'sm_'.$name, $image_small->stream('jpg')->__toString(), 'public');
                 break;
+            case "banner":
+                $dir = 'banner/'.date('Y').'/'.date('m').'/';
+                /*$image->resize(800, 600, function ($constraint) {
+                    $constraint->aspectRatio();
+                });*/
+                $image_medium->fit(300, 300);
+                $image_small->fit(100, 100);
+                $s3->put($dir.$name, $image->stream('jpg')->__toString(), 'public');
+                $s3->put($dir.'md_'.$name, $image_medium->stream('jpg')->__toString(), 'public');
+                $s3->put($dir.'sm_'.$name, $image_small->stream('jpg')->__toString(), 'public');
+                break;
 
             /* START JAGA-JAGA */
             case "tourism":
