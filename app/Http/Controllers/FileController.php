@@ -110,8 +110,8 @@ class FileController extends Controller
         $image_small = Image::make($file)->encode('jpg');
         $s3 = Storage::disk('s3_prod');
         switch($type){
-            case "member":
-                $dir = 'members/'.date('Y').'/'.date('m').'/';
+            case "profile":
+                $dir = 'profile/'.date('Y').'/'.date('m').'/';
                 $image->fit(350, 350);
                 $image_medium->fit(100, 100);
                 $image_small->fit(50, 50);
@@ -214,6 +214,17 @@ class FileController extends Controller
                 break;
             case "banner":
                 $dir = 'banner/'.date('Y').'/'.date('m').'/';
+                /*$image->resize(800, 600, function ($constraint) {
+                    $constraint->aspectRatio();
+                });*/
+                $image_medium->fit(300, 300);
+                $image_small->fit(100, 100);
+                $s3->put($dir.$name, $image->stream('jpg')->__toString(), 'public');
+                $s3->put($dir.'md_'.$name, $image_medium->stream('jpg')->__toString(), 'public');
+                $s3->put($dir.'sm_'.$name, $image_small->stream('jpg')->__toString(), 'public');
+                break;
+            case "image":
+                $dir = 'images/'.date('Y').'/'.date('m').'/';
                 /*$image->resize(800, 600, function ($constraint) {
                     $constraint->aspectRatio();
                 });*/
