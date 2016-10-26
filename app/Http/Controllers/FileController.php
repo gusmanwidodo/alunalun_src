@@ -195,7 +195,8 @@ class FileController extends Controller
                 $image->resize(800, null, function ($constraint) {
                     $constraint->aspectRatio();
                 });
-                $image_medium->fit(300, 300);
+                $image->fit(1280, 720);
+                $image_medium->fit(300, 169);
                 $image_small->fit(100, 100);
                 $s3->put($dir.$name, $image->stream('jpg')->__toString(), 'public');
                 $s3->put($dir.'md_'.$name, $image_medium->stream('jpg')->__toString(), 'public');
